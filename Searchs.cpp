@@ -18,7 +18,7 @@ int lower_bound(int k) {
     int l=0, r = n-1;
     while(l <= r) {
         int mid = l + r >> 1;
-        if (a[l] < k) {
+        if (a[mid] < k) {
             l = mid + 1;
         }
         else {
@@ -32,7 +32,7 @@ int upper_bound(int k) {
     int l=0, r = n-1;
     while(l <= r) {
         int mid = l + r >> 1;
-        if (a[l] <= k) {
+        if (a[mid] <= k) {
             l = mid + 1;
         }
         else {

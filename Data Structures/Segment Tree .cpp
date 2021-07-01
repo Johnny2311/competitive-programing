@@ -1,10 +1,7 @@
 /*Ejemplo de Algoritmos para implementar un Segment Tree + Lazy Propagation*/
 
-#include <bits/stdc++.h>
-using namespace std;
-
 const int MAXN = 2e5+5;
-int arr[MAXN];                                             
+int a[MAXN];                                             
 int s_tree[4 * MAXN];                                      
 int lazy[4 * MAXN];                                       
 
@@ -12,7 +9,7 @@ int lazy[4 * MAXN];
 
 void build(int cur,int l, int r){                    
 	if (l == r){
-	s_tree[cur] = arr[l];  
+	s_tree[cur] = a[l];  
     }
 	else{
 		int mid = l + r >> 1;                      
@@ -38,14 +35,14 @@ void update(int p, int v, int cur, int l, int r){
 }
 
 
-int query(int L, int R, int cur, int l, int r){
-    if (r < L || l > R)
+int query(int qL, int qR, int cur, int l, int r){
+    if (r < qL || l > qR)
         return 0;
-    if (l >= L && r <= R)
+    if (l >= qL && r <= qR)
         return s_tree[cur];
     else{
         int mid = l + r >> 1;
-        return query(L, R, cur<<1, l, mid) + query(L, R, cur<<1 | 1, mid+1, r);
+        return query(qL, qR, cur<<1, l, mid) + query(qL, qR, cur<<1 | 1, mid+1, r);
     }
 
 }
@@ -60,13 +57,13 @@ void push(int cur, int l, int r){
 		lazy[cur] = 0;                                  
 	}		
 }
-void update_lazy(int pI, int pF, int v, int cur, int l, int r){
+void update_lazy(int qL, int qR, int v, int cur, int l, int r){
 	push(cur, l, r); 							 
     
-	if (l > pF || r <pI)                          
+	if (l > qR || r < qL)                          
     return;
     
-	if (l >= pI && r <= pF){						 
+	if (l >= qL && r <= qR){						 
 		
 		s_tree[cur] += (r-l+1) * v;				 
 		 
@@ -77,22 +74,22 @@ void update_lazy(int pI, int pF, int v, int cur, int l, int r){
 		return;
 	}	
 	int mid = l + r >> 1;                           
-	update_lazy(pI, pF, v, cur<<1, l, mid);
-	update_lazy(pI, pF, v, cur<<1 | 1, mid+1, r);
+	update_lazy(qL, qR, v, cur<<1, l, mid);
+	update_lazy(qL, qR, v, cur<<1 | 1, mid+1, r);
 	s_tree[cur] = s_tree[cur<<1] + s_tree[cur<<1 | 1];           
 }
 
-int query_lazy(int L, int R, int cur, int l, int r){
+int query_lazy(int qL, int qR, int cur, int l, int r){
 	push(cur, l, r); 	
     
-	if (l > R || r < L)
+	if (l > qR || r < qL)
 	return 0;
 	
-	if (l >= L && r <= R)                              
+	if (l >= qL && r <= qR)                              
 	return s_tree[cur];									      
 	
 	int mid = l + r >> 1;							  
-    return query_lazy(L, R, cur<<1, l, mid) + query_lazy(L, R, cur<<1 | 1, mid+1, r);	
+    return query_lazy(qL, qR, cur<<1, l, mid) + query_lazy(qL, qR, cur<<1 | 1, mid+1, r);	
 }
 
 

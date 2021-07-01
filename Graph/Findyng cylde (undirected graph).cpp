@@ -34,16 +34,16 @@ bool dfs(int u){        //HandShaking's Theorem, count the number of nodes and e
 }
 
 bool dfs(int u, int p){         //Cycle is founded if there is a node that is visited and isn't my father
-
     visNode[u] = 1;
-    bool ans=false;
+    
     for (int i=0; i<graph[u].size(); i++){
         int v = graph[u][i];
         if(!visNode[v]){
-            ans |= dfs(v, u);
+            if (dfs(v, u))
+                return true;
         }else if(v != p) return true;
     }
-    return ans;
+    return false;
 }
 
 int main(){
